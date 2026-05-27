@@ -415,17 +415,17 @@
 <header>
   <div class="site-badge">American English File · Starter</div>
   <h1>Past Simple<br><em>Flashcards</em></h1>
-  <p class="subtitle">Nivel A1–A2 &nbsp;·&nbsp; 59 verbos</p>
+  <p class="subtitle">Nivel A1–A2 &nbsp;·&nbsp; 76 verbos</p>
 
   <div class="tabs">
     <button class="tab active-all" onclick="setFilter('all',this)">
-      Todos <span class="count">59</span>
+      Todos <span class="count">76</span>
     </button>
     <button class="tab" onclick="setFilter('regular',this)">
-      Regulares <span class="count">29</span>
+      Regulares <span class="count">44</span>
     </button>
     <button class="tab" onclick="setFilter('irregular',this)">
-      Irregulares <span class="count">30</span>
+      Irregulares <span class="count">32</span>
     </button>
   </div>
 </header>
@@ -433,7 +433,7 @@
 <main>
   <div class="progress-wrap">
     <div class="progress-info">
-      <span id="prog-label">Tarjeta 1 de 59</span>
+      <span id="prog-label">Tarjeta 1 de 76</span>
       <span id="seen-label">0 vistas</span>
     </div>
     <div class="progress-track">
@@ -461,7 +461,7 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
       Anterior
     </button>
-    <span class="nav-counter" id="counter">1 / 59</span>
+    <span class="nav-counter" id="counter">1 / 76</span>
     <button class="nav-btn" id="btn-next" onclick="go(1)" aria-label="Siguiente tarjeta">
       Siguiente
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
@@ -488,65 +488,84 @@
 
 <script>
 const ALL_VERBS = [
-  {t:'i',en:'be',past:'was / were',es:'ser / estar'},
-  {t:'i',en:'buy',past:'bought',es:'comprar'},
-  {t:'i',en:'come',past:'came',es:'venir'},
-  {t:'i',en:'drink',past:'drank',es:'beber'},
-  {t:'i',en:'drive',past:'drove',es:'manejar'},
-  {t:'i',en:'eat',past:'ate',es:'comer'},
-  {t:'i',en:'feel',past:'felt',es:'sentir'},
-  {t:'i',en:'find',past:'found',es:'encontrar'},
-  {t:'i',en:'forget',past:'forgot',es:'olvidar'},
-  {t:'i',en:'get',past:'got',es:'obtener / recibir'},
-  {t:'i',en:'get up',past:'got up',es:'levantarse'},
-  {t:'i',en:'give',past:'gave',es:'dar'},
-  {t:'i',en:'go',past:'went',es:'ir'},
-  {t:'i',en:'have',past:'had',es:'tener'},
-  {t:'i',en:'know',past:'knew',es:'saber / conocer'},
-  {t:'i',en:'leave',past:'left',es:'salir / irse'},
-  {t:'i',en:'meet',past:'met',es:'conocer a alguien'},
-  {t:'i',en:'pay',past:'paid',es:'pagar'},
-  {t:'i',en:'read',past:'read (rEd)',es:'leer'},
-  {t:'i',en:'run',past:'ran',es:'correr'},
-  {t:'i',en:'say',past:'said',es:'decir'},
-  {t:'i',en:'sleep',past:'slept',es:'dormir'},
-  {t:'i',en:'speak',past:'spoke',es:'hablar'},
-  {t:'i',en:'spend',past:'spent',es:'gastar'},
-  {t:'i',en:'take',past:'took',es:'tomar / llevar'},
-  {t:'i',en:'tell',past:'told',es:'contar / decir'},
-  {t:'i',en:'think',past:'thought',es:'pensar'},
-  {t:'i',en:'understand',past:'understood',es:'entender'},
-  {t:'i',en:'wake up',past:'woke up',es:'despertar'},
-  {t:'i',en:'write',past:'wrote',es:'escribir'},
-  {t:'r',en:'answer',past:'answered',es:'responder'},
-  {t:'r',en:'arrive',past:'arrived',es:'llegar'},
-  {t:'r',en:'ask',past:'asked',es:'preguntar'},
-  {t:'r',en:'call',past:'called',es:'llamar'},
-  {t:'r',en:'close',past:'closed',es:'cerrar'},
-  {t:'r',en:'dance',past:'danced',es:'bailar'},
-  {t:'r',en:'enjoy',past:'enjoyed',es:'disfrutar'},
-  {t:'r',en:'finish',past:'finished',es:'terminar'},
-  {t:'r',en:'help',past:'helped',es:'ayudar'},
-  {t:'r',en:'invite',past:'invited',es:'invitar'},
-  {t:'r',en:'join',past:'joined',es:'unirse'},
-  {t:'r',en:'learn',past:'learned',es:'aprender'},
-  {t:'r',en:'like',past:'liked',es:'gustar / agradar'},
-  {t:'r',en:'listen',past:'listened',es:'escuchar'},
-  {t:'r',en:'live',past:'lived',es:'vivir'},
-  {t:'r',en:'need',past:'needed',es:'necesitar'},
-  {t:'r',en:'open',past:'opened',es:'abrir'},
-  {t:'r',en:'play',past:'played',es:'jugar / tocar'},
-  {t:'r',en:'remember',past:'remembered',es:'recordar'},
-  {t:'r',en:'seem',past:'seemed',es:'parecer'},
-  {t:'r',en:'start',past:'started',es:'empezar'},
-  {t:'r',en:'study',past:'studied',es:'estudiar'},
-  {t:'r',en:'travel',past:'travelled',es:'viajar'},
-  {t:'r',en:'try',past:'tried',es:'intentar'},
-  {t:'r',en:'visit',past:'visited',es:'visitar'},
-  {t:'r',en:'walk',past:'walked',es:'caminar'},
-  {t:'r',en:'want',past:'wanted',es:'querer'},
-  {t:'r',en:'watch',past:'watched',es:'ver / mirar'},
-  {t:'r',en:'work',past:'worked',es:'trabajar'},
+  // ── Irregulares (32) ──────────────────────────────────────────
+  {t:'i',en:'be',        past:'was / were',  es:'ser / estar'},
+  {t:'i',en:'buy',       past:'bought',      es:'comprar'},
+  {t:'i',en:'come',      past:'came',        es:'venir'},
+  {t:'i',en:'do',        past:'did',         es:'hacer'},
+  {t:'i',en:'drink',     past:'drank',       es:'beber'},
+  {t:'i',en:'drive',     past:'drove',       es:'manejar'},
+  {t:'i',en:'eat',       past:'ate',         es:'comer'},
+  {t:'i',en:'feel',      past:'felt',        es:'sentir'},
+  {t:'i',en:'find',      past:'found',       es:'encontrar'},
+  {t:'i',en:'forget',    past:'forgot',      es:'olvidar'},
+  {t:'i',en:'get',       past:'got',         es:'obtener / recibir'},
+  {t:'i',en:'get up',    past:'got up',      es:'levantarse'},
+  {t:'i',en:'give',      past:'gave',        es:'dar'},
+  {t:'i',en:'go',        past:'went',        es:'ir'},
+  {t:'i',en:'have',      past:'had',         es:'tener'},
+  {t:'i',en:'know',      past:'knew',        es:'saber / conocer'},
+  {t:'i',en:'leave',     past:'left',        es:'salir / irse'},
+  {t:'i',en:'meet',      past:'met',         es:'conocer a alguien'},
+  {t:'i',en:'pay',       past:'paid',        es:'pagar'},
+  {t:'i',en:'read',      past:'read (rEd)',  es:'leer'},
+  {t:'i',en:'run',       past:'ran',         es:'correr'},
+  {t:'i',en:'say',       past:'said',        es:'decir'},
+  {t:'i',en:'send',      past:'sent',        es:'enviar'},
+  {t:'i',en:'sleep',     past:'slept',       es:'dormir'},
+  {t:'i',en:'speak',     past:'spoke',       es:'hablar'},
+  {t:'i',en:'spend',     past:'spent',       es:'gastar'},
+  {t:'i',en:'take',      past:'took',        es:'tomar / llevar'},
+  {t:'i',en:'tell',      past:'told',        es:'contar / decir'},
+  {t:'i',en:'think',     past:'thought',     es:'pensar'},
+  {t:'i',en:'understand',past:'understood',  es:'entender'},
+  {t:'i',en:'wake up',   past:'woke up',     es:'despertar'},
+  {t:'i',en:'write',     past:'wrote',       es:'escribir'},
+  // ── Regulares (44) ───────────────────────────────────────────
+  {t:'r',en:'answer',   past:'answered',    es:'responder'},
+  {t:'r',en:'arrive',   past:'arrived',     es:'llegar'},
+  {t:'r',en:'ask',      past:'asked',       es:'preguntar'},
+  {t:'r',en:'call',     past:'called',      es:'llamar'},
+  {t:'r',en:'check',    past:'checked',     es:'verificar'},
+  {t:'r',en:'clean',    past:'cleaned',     es:'limpiar'},
+  {t:'r',en:'close',    past:'closed',      es:'cerrar'},
+  {t:'r',en:'cook',     past:'cooked',      es:'cocinar'},
+  {t:'r',en:'cry',      past:'cried',       es:'llorar'},
+  {t:'r',en:'dance',    past:'danced',      es:'bailar'},
+  {t:'r',en:'enjoy',    past:'enjoyed',     es:'disfrutar'},
+  {t:'r',en:'exercise', past:'exercised',   es:'ejercitar'},
+  {t:'r',en:'finish',   past:'finished',    es:'terminar'},
+  {t:'r',en:'greet',    past:'greeted',     es:'saludar'},
+  {t:'r',en:'help',     past:'helped',      es:'ayudar'},
+  {t:'r',en:'invite',   past:'invited',     es:'invitar'},
+  {t:'r',en:'join',     past:'joined',      es:'unirse'},
+  {t:'r',en:'laugh',    past:'laughed',     es:'reír'},
+  {t:'r',en:'learn',    past:'learned',     es:'aprender'},
+  {t:'r',en:'like',     past:'liked',       es:'gustar / agradar'},
+  {t:'r',en:'listen',   past:'listened',    es:'escuchar'},
+  {t:'r',en:'live',     past:'lived',       es:'vivir'},
+  {t:'r',en:'look',     past:'looked',      es:'mirar / buscar'},
+  {t:'r',en:'love',     past:'loved',       es:'amar'},
+  {t:'r',en:'miss',     past:'missed',      es:'extrañar'},
+  {t:'r',en:'move',     past:'moved',       es:'moverse / mudarse'},
+  {t:'r',en:'need',     past:'needed',      es:'necesitar'},
+  {t:'r',en:'open',     past:'opened',      es:'abrir'},
+  {t:'r',en:'play',     past:'played',      es:'jugar / tocar'},
+  {t:'r',en:'rain',     past:'rained',      es:'llover'},
+  {t:'r',en:'relax',    past:'relaxed',     es:'relajarse'},
+  {t:'r',en:'remember', past:'remembered',  es:'recordar'},
+  {t:'r',en:'seem',     past:'seemed',      es:'parecer'},
+  {t:'r',en:'start',    past:'started',     es:'empezar'},
+  {t:'r',en:'stay',     past:'stayed',      es:'quedarse'},
+  {t:'r',en:'study',    past:'studied',     es:'estudiar'},
+  {t:'r',en:'travel',   past:'travelled',   es:'viajar'},
+  {t:'r',en:'try',      past:'tried',       es:'intentar'},
+  {t:'r',en:'visit',    past:'visited',     es:'visitar'},
+  {t:'r',en:'walk',     past:'walked',      es:'caminar'},
+  {t:'r',en:'want',     past:'wanted',      es:'querer'},
+  {t:'r',en:'wash',     past:'washed',      es:'lavar'},
+  {t:'r',en:'watch',    past:'watched',     es:'ver / mirar'},
+  {t:'r',en:'work',     past:'worked',      es:'trabajar'},
 ];
 
 let deck = [...ALL_VERBS];
