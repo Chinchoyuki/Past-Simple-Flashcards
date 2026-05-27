@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Past Simple — Flashcards A1·A2</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F7F4EF;
+    --surface: #FFFFFF;
+    --surface2: #F0EDE7;
+    --text: #1A1714;
+    --text-muted: #7A7268;
+    --text-faint: #B0A89E;
+    --accent-reg: #0F6E56;
+    --accent-reg-bg: #E1F5EE;
+    --accent-reg-light: #9FE1CB;
+    --accent-irr: #3C3489;
+    --accent-irr-bg: #EEEDFE;
+    --accent-irr-light: #AFA9EC;
+    --border: rgba(26,23,20,0.1);
+    --border-strong: rgba(26,23,20,0.18);
+    --shadow: 0 2px 16px rgba(26,23,20,0.08), 0 1px 4px rgba(26,23,20,0.06);
+    --shadow-hover: 0 8px 32px rgba(26,23,20,0.14), 0 2px 8px rgba(26,23,20,0.08);
+    --radius: 16px;
+    --radius-sm: 8px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Header */
+  header {
+    padding: 2rem 2rem 0;
+    text-align: center;
+  }
+
+  .site-badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 1rem;
+  }
+
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 400;
+    line-height: 1.1;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--accent-irr);
+  }
+
+  .subtitle {
+    font-size: 15px;
+    color: var(--text-muted);
+    font-weight: 300;
+    margin-bottom: 2rem;
+  }
+
+  /* Filter tabs */
+  .tabs {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+    padding: 0 1rem;
+  }
+
+  .tab {
+    padding: 8px 18px;
+    border-radius: 30px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text-muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .tab:hover { border-color: var(--border-strong); color: var(--text); }
+
+  .tab.active-all { background: var(--text); color: var(--bg); border-color: var(--text); }
+  .tab.active-regular { background: var(--accent-reg); color: white; border-color: var(--accent-reg); }
+  .tab.active-irregular { background: var(--accent-irr); color: white; border-color: var(--accent-irr); }
+
+  .tab .count {
+    display: inline-block;
+    background: rgba(255,255,255,0.25);
+    border-radius: 10px;
+    padding: 1px 7px;
+    font-size: 11px;
+    margin-left: 4px;
+  }
+  .tab:not([class*="active"]) .count {
+    background: var(--surface2);
+    color: var(--text-muted);
+  }
+
+  /* Main area */
+  main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 1rem 3rem;
+  }
+
+  /* Progress */
+  .progress-wrap {
+    width: 100%;
+    max-width: 500px;
+    margin-bottom: 1rem;
+  }
+
+  .progress-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--text-faint);
+    margin-bottom: 6px;
+  }
+
+  .progress-track {
+    height: 3px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    border-radius: 3px;
+    background: linear-gradient(90deg, var(--accent-reg), var(--accent-irr));
+    transition: width 0.4s ease;
+  }
+
+  /* Card */
+  .card-scene {
+    width: 100%;
+    max-width: 500px;
+    height: 260px;
+    perspective: 1200px;
+    cursor: pointer;
+    margin-bottom: 1.25rem;
+  }
+
+  .card-scene:focus-visible { outline: 3px solid var(--accent-irr); border-radius: var(--radius); }
+
+  .card-body {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .card-body.flipped { transform: rotateY(180deg); }
+
+  .card-face {
+    position: absolute;
+    inset: 0;
+    background: var(--surface);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2.5rem 2rem;
+    text-align: center;
+    transition: box-shadow 0.2s;
+    user-select: none;
+  }
+
+  .card-scene:hover .card-face { box-shadow: var(--shadow-hover); }
+
+  .card-back { transform: rotateY(180deg); }
+
+  .verb-type-badge {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 12px;
+    border-radius: 20px;
+    margin-bottom: 1.25rem;
+  }
+
+  .badge-reg { background: var(--accent-reg-bg); color: var(--accent-reg); }
+  .badge-irr { background: var(--accent-irr-bg); color: var(--accent-irr); }
+
+  .card-label {
+    font-size: 13px;
+    color: var(--text-muted);
+    font-weight: 300;
+    margin-bottom: 0.4rem;
+  }
+
+  .card-verb-front {
+    font-family: 'DM Serif Display', serif;
+    font-size: 3rem;
+    color: var(--text);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+
+  .card-es {
+    font-size: 14px;
+    color: var(--text-muted);
+    font-style: italic;
+    margin-bottom: 1rem;
+  }
+
+  .flip-hint {
+    font-size: 11px;
+    color: var(--text-faint);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: auto;
+  }
+
+  .flip-hint svg { width: 14px; height: 14px; opacity: 0.5; }
+
+  .card-verb-back {
+    font-family: 'DM Serif Display', serif;
+    font-size: 3.2rem;
+    line-height: 1;
+    margin-bottom: 0.4rem;
+  }
+
+  .answer-reg { color: var(--accent-reg); }
+  .answer-irr { color: var(--accent-irr); }
+
+  .card-arrow {
+    font-size: 13px;
+    color: var(--text-faint);
+    margin-bottom: 0.25rem;
+  }
+
+  .card-translation-back {
+    font-size: 14px;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+
+  /* Navigation */
+  .nav {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    max-width: 500px;
+    justify-content: center;
+  }
+
+  .nav-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 22px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-strong);
+    background: var(--surface);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+    box-shadow: 0 1px 3px rgba(26,23,20,0.06);
+  }
+
+  .nav-btn:hover { background: var(--surface2); transform: translateY(-1px); box-shadow: var(--shadow); }
+  .nav-btn:active { transform: scale(0.97); }
+  .nav-btn:disabled { opacity: 0.35; cursor: default; transform: none; box-shadow: none; }
+
+  .nav-btn svg { width: 16px; height: 16px; }
+
+  .nav-counter {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-muted);
+    min-width: 52px;
+    text-align: center;
+  }
+
+  .shuffle-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: none;
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 6px 10px;
+    border-radius: var(--radius-sm);
+    transition: color 0.15s, background 0.15s;
+    margin-top: 1.25rem;
+  }
+
+  .shuffle-btn:hover { color: var(--text); background: var(--surface); }
+  .shuffle-btn svg { width: 15px; height: 15px; }
+
+  /* Keyboard hint */
+  .keyboard-hint {
+    margin-top: 2rem;
+    font-size: 12px;
+    color: var(--text-faint);
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .key {
+    display: inline-block;
+    background: var(--surface);
+    border: 1px solid var(--border-strong);
+    border-radius: 5px;
+    padding: 1px 7px;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-muted);
+    box-shadow: 0 1.5px 0 var(--border-strong);
+  }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 1.5rem;
+    font-size: 12px;
+    color: var(--text-faint);
+    border-top: 1px solid var(--border);
+  }
+
+  /* Completion banner */
+  .completed-banner {
+    display: none;
+    width: 100%;
+    max-width: 500px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: var(--shadow);
+    margin-bottom: 1.25rem;
+  }
+
+  .completed-banner.show { display: block; }
+
+  .completed-banner h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.5rem;
+    font-weight: 400;
+    margin-bottom: 0.4rem;
+  }
+
+  .completed-banner p { font-size: 14px; color: var(--text-muted); margin-bottom: 1rem; }
+
+  .restart-btn {
+    padding: 9px 24px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--text);
+    background: var(--text);
+    color: var(--bg);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+
+  .restart-btn:hover { opacity: 0.82; }
+
+  @media (max-width: 480px) {
+    header { padding: 1.5rem 1rem 0; }
+    .card-verb-front, .card-verb-back { font-size: 2.4rem; }
+    .card-scene { height: 240px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="site-badge">American English File · Starter</div>
+  <h1>Past Simple<br><em>Flashcards</em></h1>
+  <p class="subtitle">Nivel A1–A2 &nbsp;·&nbsp; 76 verbos</p>
+
+  <div class="tabs">
+    <button class="tab active-all" onclick="setFilter('all',this)">
+      Todos <span class="count">76</span>
+    </button>
+    <button class="tab" onclick="setFilter('regular',this)">
+      Regulares <span class="count">44</span>
+    </button>
+    <button class="tab" onclick="setFilter('irregular',this)">
+      Irregulares <span class="count">32</span>
+    </button>
+  </div>
+</header>
+
+<main>
+  <div class="progress-wrap">
+    <div class="progress-info">
+      <span id="prog-label">Tarjeta 1 de 76</span>
+      <span id="seen-label">0 vistas</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="prog-fill" style="width:0%"></div>
+    </div>
+  </div>
+
+  <div class="completed-banner" id="completed-banner">
+    <h2>¡Completado! 🎉</h2>
+    <p>Revisaste todas las tarjetas del mazo.</p>
+    <button class="restart-btn" onclick="restart()">Volver a empezar</button>
+  </div>
+
+  <div class="card-scene" id="card-scene" tabindex="0" role="button"
+       aria-label="Tarjeta de vocabulario. Presiona para voltear."
+       onclick="flip()" onkeydown="handleKey(event)">
+    <div class="card-body" id="card-body">
+      <div class="card-face card-front" id="front"></div>
+      <div class="card-face card-back" id="back"></div>
+    </div>
+  </div>
+
+  <nav class="nav" aria-label="Navegación de tarjetas">
+    <button class="nav-btn" id="btn-prev" onclick="go(-1)" disabled aria-label="Tarjeta anterior">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+      Anterior
+    </button>
+    <span class="nav-counter" id="counter">1 / 76</span>
+    <button class="nav-btn" id="btn-next" onclick="go(1)" aria-label="Siguiente tarjeta">
+      Siguiente
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
+  </nav>
+
+  <button class="shuffle-btn" onclick="shuffle()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/>
+    </svg>
+    Barajar mazo
+  </button>
+
+  <div class="keyboard-hint" aria-hidden="true">
+    <span><span class="key">←</span> Anterior</span>
+    <span><span class="key">→</span> Siguiente</span>
+    <span><span class="key">Space</span> Voltear</span>
+  </div>
+</main>
+
+<footer>
+  Past Simple Flashcards &nbsp;·&nbsp; American English File Starter A1–A2
+</footer>
+
+<script>
+const ALL_VERBS = [
+  // ── Irregulares (32) ──────────────────────────────────────────
+  {t:'i',en:'be',        past:'was / were',  es:'ser / estar'},
+  {t:'i',en:'buy',       past:'bought',      es:'comprar'},
+  {t:'i',en:'come',      past:'came',        es:'venir'},
+  {t:'i',en:'do',        past:'did',         es:'hacer'},
+  {t:'i',en:'drink',     past:'drank',       es:'beber'},
+  {t:'i',en:'drive',     past:'drove',       es:'manejar'},
+  {t:'i',en:'eat',       past:'ate',         es:'comer'},
+  {t:'i',en:'feel',      past:'felt',        es:'sentir'},
+  {t:'i',en:'find',      past:'found',       es:'encontrar'},
+  {t:'i',en:'forget',    past:'forgot',      es:'olvidar'},
+  {t:'i',en:'get',       past:'got',         es:'obtener / recibir'},
+  {t:'i',en:'get up',    past:'got up',      es:'levantarse'},
+  {t:'i',en:'give',      past:'gave',        es:'dar'},
+  {t:'i',en:'go',        past:'went',        es:'ir'},
+  {t:'i',en:'have',      past:'had',         es:'tener'},
+  {t:'i',en:'know',      past:'knew',        es:'saber / conocer'},
+  {t:'i',en:'leave',     past:'left',        es:'salir / irse'},
+  {t:'i',en:'meet',      past:'met',         es:'conocer a alguien'},
+  {t:'i',en:'pay',       past:'paid',        es:'pagar'},
+  {t:'i',en:'read',      past:'read (rEd)',  es:'leer'},
+  {t:'i',en:'run',       past:'ran',         es:'correr'},
+  {t:'i',en:'say',       past:'said',        es:'decir'},
+  {t:'i',en:'send',      past:'sent',        es:'enviar'},
+  {t:'i',en:'sleep',     past:'slept',       es:'dormir'},
+  {t:'i',en:'speak',     past:'spoke',       es:'hablar'},
+  {t:'i',en:'spend',     past:'spent',       es:'gastar'},
+  {t:'i',en:'take',      past:'took',        es:'tomar / llevar'},
+  {t:'i',en:'tell',      past:'told',        es:'contar / decir'},
+  {t:'i',en:'think',     past:'thought',     es:'pensar'},
+  {t:'i',en:'understand',past:'understood',  es:'entender'},
+  {t:'i',en:'wake up',   past:'woke up',     es:'despertar'},
+  {t:'i',en:'write',     past:'wrote',       es:'escribir'},
+  // ── Regulares (44) ───────────────────────────────────────────
+  {t:'r',en:'answer',   past:'answered',    es:'responder'},
+  {t:'r',en:'arrive',   past:'arrived',     es:'llegar'},
+  {t:'r',en:'ask',      past:'asked',       es:'preguntar'},
+  {t:'r',en:'call',     past:'called',      es:'llamar'},
+  {t:'r',en:'check',    past:'checked',     es:'verificar'},
+  {t:'r',en:'clean',    past:'cleaned',     es:'limpiar'},
+  {t:'r',en:'close',    past:'closed',      es:'cerrar'},
+  {t:'r',en:'cook',     past:'cooked',      es:'cocinar'},
+  {t:'r',en:'cry',      past:'cried',       es:'llorar'},
+  {t:'r',en:'dance',    past:'danced',      es:'bailar'},
+  {t:'r',en:'enjoy',    past:'enjoyed',     es:'disfrutar'},
+  {t:'r',en:'exercise', past:'exercised',   es:'ejercitar'},
+  {t:'r',en:'finish',   past:'finished',    es:'terminar'},
+  {t:'r',en:'greet',    past:'greeted',     es:'saludar'},
+  {t:'r',en:'help',     past:'helped',      es:'ayudar'},
+  {t:'r',en:'invite',   past:'invited',     es:'invitar'},
+  {t:'r',en:'join',     past:'joined',      es:'unirse'},
+  {t:'r',en:'laugh',    past:'laughed',     es:'reír'},
+  {t:'r',en:'learn',    past:'learned',     es:'aprender'},
+  {t:'r',en:'like',     past:'liked',       es:'gustar / agradar'},
+  {t:'r',en:'listen',   past:'listened',    es:'escuchar'},
+  {t:'r',en:'live',     past:'lived',       es:'vivir'},
+  {t:'r',en:'look',     past:'looked',      es:'mirar / buscar'},
+  {t:'r',en:'love',     past:'loved',       es:'amar'},
+  {t:'r',en:'miss',     past:'missed',      es:'extrañar'},
+  {t:'r',en:'move',     past:'moved',       es:'moverse / mudarse'},
+  {t:'r',en:'need',     past:'needed',      es:'necesitar'},
+  {t:'r',en:'open',     past:'opened',      es:'abrir'},
+  {t:'r',en:'play',     past:'played',      es:'jugar / tocar'},
+  {t:'r',en:'rain',     past:'rained',      es:'llover'},
+  {t:'r',en:'relax',    past:'relaxed',     es:'relajarse'},
+  {t:'r',en:'remember', past:'remembered',  es:'recordar'},
+  {t:'r',en:'seem',     past:'seemed',      es:'parecer'},
+  {t:'r',en:'start',    past:'started',     es:'empezar'},
+  {t:'r',en:'stay',     past:'stayed',      es:'quedarse'},
+  {t:'r',en:'study',    past:'studied',     es:'estudiar'},
+  {t:'r',en:'travel',   past:'travelled',   es:'viajar'},
+  {t:'r',en:'try',      past:'tried',       es:'intentar'},
+  {t:'r',en:'visit',    past:'visited',     es:'visitar'},
+  {t:'r',en:'walk',     past:'walked',      es:'caminar'},
+  {t:'r',en:'want',     past:'wanted',      es:'querer'},
+  {t:'r',en:'wash',     past:'washed',      es:'lavar'},
+  {t:'r',en:'watch',    past:'watched',     es:'ver / mirar'},
+  {t:'r',en:'work',     past:'worked',      es:'trabajar'},
+];
+
+let deck = [...ALL_VERBS];
+let idx = 0;
+let isFlipped = false;
+let seen = new Set();
+let filterMode = 'all';
+
+function setFilter(mode, btn) {
+  filterMode = mode;
+  document.querySelectorAll('.tab').forEach(b => {
+    b.className = 'tab';
+  });
+  if (mode === 'all') btn.className = 'tab active-all';
+  else if (mode === 'regular') btn.className = 'tab active-regular';
+  else btn.className = 'tab active-irregular';
+
+  deck = mode === 'all' ? [...ALL_VERBS]
+       : mode === 'regular' ? ALL_VERBS.filter(v => v.t === 'r')
+       : ALL_VERBS.filter(v => v.t === 'i');
+  idx = 0; isFlipped = false; seen = new Set();
+  document.getElementById('card-body').classList.remove('flipped');
+  document.getElementById('completed-banner').classList.remove('show');
+  render();
+}
+
+function shuffle() {
+  for (let i = deck.length-1; i > 0; i--) {
+    const j = Math.floor(Math.random()*(i+1));
+    [deck[i],deck[j]] = [deck[j],deck[i]];
+  }
+  idx = 0; isFlipped = false; seen = new Set();
+  document.getElementById('card-body').classList.remove('flipped');
+  document.getElementById('completed-banner').classList.remove('show');
+  render();
+}
+
+function flip() {
+  isFlipped = !isFlipped;
+  document.getElementById('card-body').classList.toggle('flipped', isFlipped);
+  seen.add(idx);
+  updateProgress();
+  if (seen.size === deck.length) {
+    document.getElementById('completed-banner').classList.add('show');
+  }
+}
+
+function go(dir) {
+  const newIdx = idx + dir;
+  if (newIdx < 0 || newIdx >= deck.length) return;
+  idx = newIdx;
+  isFlipped = false;
+  document.getElementById('card-body').classList.remove('flipped');
+  render();
+}
+
+function restart() {
+  idx = 0; isFlipped = false; seen = new Set();
+  document.getElementById('card-body').classList.remove('flipped');
+  document.getElementById('completed-banner').classList.remove('show');
+  render();
+}
+
+function handleKey(e) {
+  if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); flip(); }
+  if (e.key === 'ArrowRight') go(1);
+  if (e.key === 'ArrowLeft') go(-1);
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.target === document.body || e.target === document.getElementById('card-scene')) return;
+});
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'ArrowRight') go(1);
+  if (e.key === 'ArrowLeft') go(-1);
+  if (e.key === ' ') { e.preventDefault(); flip(); }
+});
+
+function updateProgress() {
+  const total = deck.length;
+  const s = seen.size;
+  document.getElementById('prog-label').textContent = `Tarjeta ${idx+1} de ${total}`;
+  document.getElementById('seen-label').textContent = `${s} vista${s!==1?'s':''}`;
+  document.getElementById('prog-fill').style.width = (s/total*100)+'%';
+  document.getElementById('counter').textContent = `${idx+1} / ${total}`;
+  document.getElementById('btn-prev').disabled = idx === 0;
+  document.getElementById('btn-next').disabled = idx === deck.length-1;
+}
+
+function render() {
+  const v = deck[idx];
+  const isIrr = v.t === 'i';
+  const badgeClass = isIrr ? 'badge-irr' : 'badge-reg';
+  const badgeLabel = isIrr ? 'Irregular' : 'Regular';
+  const answerClass = isIrr ? 'answer-irr' : 'answer-reg';
+
+  document.getElementById('front').innerHTML = `
+    <span class="verb-type-badge ${badgeClass}">${badgeLabel}</span>
+    <p class="card-label">¿Cuál es el pasado simple de</p>
+    <p class="card-verb-front">${v.en}</p>
+    <p class="card-es">${v.es}</p>
+    <p class="flip-hint">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M1 4v6h6M23 20v-6h-6"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/>
+      </svg>
+      Toca para ver la respuesta
+    </p>
+  `;
+
+  document.getElementById('back').innerHTML = `
+    <span class="verb-type-badge ${badgeClass}">${badgeLabel}</span>
+    <p class="card-verb-back ${answerClass}">${v.past}</p>
+    <p class="card-arrow">${v.en} &rarr; ${v.past}</p>
+    <p class="card-translation-back">${v.es}</p>
+  `;
+
+  seen.add(idx);
+  updateProgress();
+}
+
+render();
+</script>
+</body>
+</html>
